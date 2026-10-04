@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#fbd3d5">
+<meta name="robots" content="noindex, nofollow">
+<title>psst, Jiya… 💌</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Borel&family=Gochi+Hand&display=swap" rel="stylesheet">
+<!--
+  ✏️ QUICK EDITS
+  • her name ............ search for "pyari Jiya"
+  • your own sticker .... paste a link into CAT_IMG (in the script at the bottom)
+-->
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blush:#fbd3d5;
+  --rose:#f3b1ba;
+  --ink:#e3403c;
+  --ink-deep:#c12d30;
+  --cream:#fff6f1;
+  /* one unit = 1% of the card width; everything is sized from it */
+  --u:min(1vw,4.6px,.56vh);
+  --script:"Borel","Segoe Script","Bradley Hand","Snell Roundhand",cursive;
+  --hand:"Gochi Hand","Marker Felt","Chalkboard SE","Segoe Print","Comic Sans MS",casual,cursive;
+}
+@supports (height:100dvh){:root{--u:min(1vw,4.6px,.56dvh)}}
+
+html,body{height:100%}
+body{
+  display:grid;place-items:center;overflow:hidden;
+  color:var(--ink);font-family:var(--hand);font-weight:400;
+  background:
+    radial-gradient(120% 80% at 15% 10%,#f8c6cc 0,transparent 55%),
+    radial-gradient(100% 70% at 90% 95%,#f6bcc4 0,transparent 55%),
+    var(--rose);
+  -webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;touch-action:manipulation;
+}
+h1,h2,b,button{font-weight:400}
+
+/* ───────── the card ───────── */
+.card{
+  position:relative;width:min(100vw,calc(var(--u)*100));height:100vh;height:100dvh;
+  background:var(--blush);overflow:hidden;isolation:isolate;
+  -webkit-user-select:none;user-select:none;
+}
+.card::after{ /* soft printed-paper grain */
+  content:"";position:absolute;inset:0;z-index:9;pointer-events:none;opacity:.55;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .78 0 0 0 0 .2 0 0 0 0 .22 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E");
+}
+@media (min-width:560px) and (min-height:600px){
+  .card{height:min(96vh,calc(var(--u)*196));border-radius:calc(var(--u)*1.4);box-shadow:0 calc(var(--u)*2.5) calc(var(--u)*8) rgba(160,36,52,.3)}
+}
+
+/* ───────── doodles ───────── */
+.doodles{position:absolute;inset:0;z-index:1;pointer-events:none;transition:opacity .45s ease,visibility 0s linear 0s}
+.card[data-step="1"] .for-2,.card[data-step="2"] .for-1{opacity:0;visibility:hidden;transition-delay:0s,.45s}
+.d{
+  position:absolute;
+  left:calc(var(--u)*var(--x,0));top:calc(var(--u)*var(--y,0));width:calc(var(--u)*var(--w,10));
+  transform:rotate(var(--r,0deg));
+}
+.d.r{left:auto;right:calc(var(--u)*var(--x,0))}
+.d.b{top:auto;bottom:calc(var(--u)*var(--y,0))}
+.d svg{display:block;width:100%;height:auto;overflow:visible;fill:none;stroke:currentColor;stroke-width:var(--sw,2.6);stroke-linecap:round;stroke-linejoin:round}
+.d .f{fill:currentColor}
+.card[data-step="1"] .for-1 .d,
+.card[data-step="2"] .for-2 .d,
+.card[data-step="2"] .zone .d{animation:pop .75s cubic-bezier(.3,1.5,.5,1) both;animation-delay:calc(var(--i,0)*70ms + .1s)}
+.twinkle{animation:twinkle 2.8s ease-in-out infinite;animation-delay:var(--dl,0s)}
+.swing{transform-origin:50% 0;animation:swing 4.4s ease-in-out infinite}
+
+/* ───────── steps ───────── */
+.step{
+  position:absolute;inset:0;z-index:2;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  transition:opacity .35s ease,transform .5s cubic-bezier(.4,0,.2,1),visibility 0s linear 0s;
+}
+#s1{padding:calc(var(--u)*26) calc(var(--u)*6) calc(var(--u)*33)}
+#s2{padding:calc(var(--u)*15) calc(var(--u)*6) calc(var(--u)*30)}
+.card[data-step="2"] #s1{opacity:0;visibility:hidden;pointer-events:none;transform:scale(.8);transition-delay:0s,0s,.5s}
+.card[data-step="1"] #s2{opacity:0;visibility:hidden;pointer-events:none}
+
+#s1 .rise,.card[data-step="2"] #s2 .rise{animation:rise .6s cubic-bezier(.2,.8,.3,1) both;animation-delay:calc(var(--i,0)*110ms + .25s)}
+.write{display:inline-block}
+#s1 .write,.card[data-step="2"] #s2 .write{animation:write 1s cubic-bezier(.5,.1,.3,1) both;animation-delay:calc(var(--i,0)*110ms + .25s)}
+
+/* ───────── type ───────── */
+.copy{display:flex;flex-direction:column;align-items:center}
+.eyebrow{display:flex;align-items:center;gap:calc(var(--u)*2.4);font-size:calc(var(--u)*5.2);letter-spacing:.2em;text-transform:uppercase;line-height:1.2}
+.eyebrow svg{width:calc(var(--u)*3.4);height:calc(var(--u)*3.4);fill:currentColor}
+.name{
+  font-family:var(--script);font-size:calc(var(--u)*10.5);line-height:1.3;white-space:nowrap;
+  transform:rotate(-3deg);margin-top:calc(var(--u)*1);-webkit-text-stroke:calc(var(--u)*.08) currentColor;
+}
+.question{display:flex;flex-direction:column;align-items:center;font-size:inherit;margin-top:calc(var(--u)*3)}
+.ask{font-size:calc(var(--u)*5.4);letter-spacing:.12em;text-transform:uppercase;line-height:1.25}
+.title{
+  position:relative;font-family:var(--script);font-size:calc(var(--u)*17);line-height:1.3;white-space:nowrap;
+  transform:rotate(-4deg);margin-top:calc(var(--u)*.6);-webkit-text-stroke:calc(var(--u)*.14) currentColor;
+}
+.title .tw{position:absolute;right:calc(var(--u)*-5);top:calc(var(--u)*1);width:calc(var(--u)*5);height:calc(var(--u)*5);fill:currentColor}
+
+.heart{
+  display:inline-block;width:.62em;height:.58em;margin-left:.16em;vertical-align:baseline;
+  fill:var(--ink);transform:rotate(8deg);
+}
+#s1 .heart,.card[data-step="2"] #s2 .heart{
+  animation:heartpop .5s cubic-bezier(.3,1.6,.5,1) var(--hd,1.4s) backwards,
+            beat 1.5s ease-in-out calc(var(--hd,1.4s) + .5s) infinite;
+}
+
+/* ───────── yes / no ───────── */
+.choices{display:flex;align-items:center;justify-content:center;gap:calc(var(--u)*3);margin-top:calc(var(--u)*5)}
+.btn{appearance:none;-webkit-appearance:none;border:0;background:none;color:inherit;font:inherit;line-height:1;cursor:pointer}
+.btn:focus{outline:none}
+.btn:focus-visible .face{outline:calc(var(--u)*.6) dashed var(--ink-deep);outline-offset:calc(var(--u)*1.2)}
+.face{
+  display:block;white-space:nowrap;text-transform:uppercase;letter-spacing:.1em;
+  font-size:calc(var(--u)*6.6);
+  padding:calc(var(--u)*3.1) calc(var(--u)*8) calc(var(--u)*2.7);
+  border:calc(var(--u)*.65) solid var(--ink);
+  border-radius:calc(var(--u)*7) calc(var(--u)*5.4) calc(var(--u)*6.8) calc(var(--u)*5.8)/calc(var(--u)*6) calc(var(--u)*7) calc(var(--u)*5.6) calc(var(--u)*6.9);
+}
+.yes{transition:transform .15s ease}
+.yes .face{
+  background:var(--ink);color:var(--cream);
+  box-shadow:calc(var(--u)*.7) calc(var(--u)*.9) 0 var(--ink-deep);
+  transform:rotate(-3deg) scale(var(--grow,1));
+  animation:nudge 3.4s ease-in-out 2.6s infinite;
+  transition:box-shadow .15s ease;
+}
+.yes:hover{transform:translateY(calc(var(--u)*-.6))}
+.yes:active{transform:translate(calc(var(--u)*.5),calc(var(--u)*.7))}
+.yes:active .face{box-shadow:0 0 0 var(--ink-deep)}
+
+.slot{display:grid;place-items:center;width:calc(var(--u)*27);height:calc(var(--u)*14)}
+.no{
+  position:relative;z-index:6;touch-action:none;
+  transform:translate(var(--dx,0px),var(--dy,0px));
+  transition:transform .34s cubic-bezier(.25,1.35,.45,1);
+}
+.no .face{
+  background:var(--blush);font-size:calc(var(--u)*5.6);
+  padding-left:calc(var(--u)*6);padding-right:calc(var(--u)*6);
+  transform:rotate(var(--tilt,4deg));transition:transform .34s ease;
+}
+
+.hint{
+  min-height:calc(var(--u)*5.5);margin-top:calc(var(--u)*3.2);
+  font-size:calc(var(--u)*3.9);letter-spacing:.12em;text-transform:uppercase;line-height:1.3;
+  opacity:0;transform:translateY(calc(var(--u)*1.2));transition:opacity .4s ease,transform .4s ease;
+}
+.hint.show{opacity:.92;transform:none}
+.rsvp{position:absolute;left:0;right:0;bottom:calc(var(--u)*5);font-size:calc(var(--u)*4.6);letter-spacing:.16em;text-transform:uppercase}
+
+/* ───────── step 2 ───────── */
+.yay{
+  font-family:var(--script);font-size:calc(var(--u)*13.5);line-height:1.3;white-space:nowrap;outline:none;
+  transform:rotate(-4deg);-webkit-text-stroke:calc(var(--u)*.12) currentColor;
+}
+.zone{position:relative;width:calc(var(--u)*70);margin:calc(var(--u)*1) 0 0 calc(var(--u)*16)}
+.sticker{
+  position:relative;cursor:pointer;transform:rotate(3deg);
+  filter:drop-shadow(0 calc(var(--u)*.7) calc(var(--u)*1.1) rgba(176,44,58,.3));
+}
+.card[data-step="2"] .sticker{animation:slap .8s cubic-bezier(.3,1.3,.5,1) .25s both}
+.kitty{display:block;width:100%;height:auto;animation:sway 5.5s ease-in-out infinite}
+.kitty .eyes{transform-box:fill-box;transform-origin:50% 50%;animation:blink 4.6s infinite}
+.photo{display:block;width:92%;margin:0 auto;border:calc(var(--u)*1.8) solid #fff;border-radius:calc(var(--u)*6);background:#fff}
+
+.bubble{
+  position:absolute;left:calc(var(--u)*-22);top:calc(var(--u)*-3);width:calc(var(--u)*42);
+  transform-origin:96% 92%;transform:rotate(-4deg);
+}
+.card[data-step="2"] .bubble{animation:bubble .55s cubic-bezier(.3,1.5,.5,1) 1.05s both}
+.bubble svg{display:block;width:100%;height:auto;overflow:visible}
+.bubble p{
+  position:absolute;left:6%;top:9%;width:82%;height:70%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:calc(var(--u)*4.4);line-height:1.14;letter-spacing:.07em;text-transform:uppercase;
+}
+.bubble span{text-wrap:balance}
+.bubble b{font-size:1.14em}
+
+.waiting{
+  font-family:var(--script);font-size:calc(var(--u)*7.8);line-height:1.3;white-space:nowrap;
+  transform:rotate(-2deg);margin-top:calc(var(--u)*2.5);-webkit-text-stroke:calc(var(--u)*.07) currentColor;
+  --hd:2.5s;
+}
+
+/* ───────── the blast ───────── */
+#blast{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:60}
+.ring{
+  position:fixed;z-index:59;pointer-events:none;border-radius:50%;
+  width:calc(var(--u)*20);height:calc(var(--u)*20);margin:calc(var(--u)*-10) 0 0 calc(var(--u)*-10);
+  border:calc(var(--u)*1.4) solid var(--cream);
+  animation:ring .7s ease-out forwards;
+}
+
+/* ───────── motion ───────── */
+@keyframes pop{from{opacity:0;transform:rotate(calc(var(--r,0deg) - 16deg)) scale(.3)}to{opacity:1;transform:rotate(var(--r,0deg)) scale(1)}}
+@keyframes rise{from{opacity:0;transform:translateY(calc(var(--u)*3))}to{opacity:1;transform:none}}
+@keyframes write{from{clip-path:inset(-40% 105% -40% -8%)}to{clip-path:inset(-40% -8% -40% -8%)}}
+@keyframes twinkle{50%{transform:scale(.55) rotate(18deg);opacity:.55}}
+@keyframes swing{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+@keyframes heartpop{from{opacity:0;transform:scale(0) rotate(-30deg)}to{opacity:1;transform:scale(1) rotate(8deg)}}
+@keyframes beat{0%,56%,100%{transform:scale(1) rotate(8deg)}14%{transform:scale(1.22) rotate(8deg)}28%{transform:scale(1) rotate(8deg)}42%{transform:scale(1.15) rotate(8deg)}}
+@keyframes nudge{
+  0%,84%,100%{transform:rotate(-3deg) scale(var(--grow,1))}
+  89%{transform:rotate(-8deg) scale(calc(var(--grow,1)*1.07))}
+  94%{transform:rotate(2deg) scale(calc(var(--grow,1)*1.07))}
+}
+@keyframes slap{
+  0%{opacity:0;transform:scale(1.7) rotate(-14deg)}
+  60%{opacity:1;transform:scale(.95) rotate(6deg)}
+  100%{opacity:1;transform:scale(1) rotate(3deg)}
+}
+@keyframes sway{0%,100%{transform:rotate(-1.2deg)}50%{transform:rotate(1.4deg) translateY(calc(var(--u)*-.6))}}
+@keyframes blink{0%,91%,100%{transform:scaleY(1)}94.5%{transform:scaleY(.08)}}
+@keyframes bubble{from{opacity:0;transform:scale(.2) rotate(-18deg)}to{opacity:1;transform:scale(1) rotate(-4deg)}}
+@keyframes ring{from{transform:scale(.2);opacity:1}to{transform:scale(7);opacity:0}}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+
+<!-- doodle sprite (drawn once, reused on both screens) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <path id="i-spark" d="M20 3C21 13 27 19 37 20C27 21 21 27 20 37C19 27 13 21 3 20C13 19 19 13 20 3Z"/>
+    <path id="i-heart" d="M20 34C9 26 2 18 5 10C8 3 17 4 20 12C24 3 33 3 35 11C37 19 30 26 20 34Z"/>
+    <path id="i-scribble" d="M24 36C10 26 3 16 9 9C15 3 22 8 22 15C24 7 32 2 38 9C44 18 32 28 14 38"/>
+    <path id="i-burst" d="M20 5L21 35M5 21L35 19M9 10L31 30M30 9L10 31"/>
+    <path id="i-dash" d="M6 18L20 9M14 32L32 25"/>
+
+    <g id="i-bottle">
+      <path d="M31 8C36 4 45 4 50 8L51 25C45 28 36 28 30 25Z"/>
+      <path d="M30 25C30 39 31 50 30 60C28 78 13 87 12 109C10 136 11 164 12 184C13 193 18 196 26 196L55 196C63 196 68 192 68 184C69 162 70 136 68 109C67 87 52 78 51 60C50 50 51 39 51 25"/>
+      <path d="M29 47C33 51 36 45 40 49C44 53 48 46 52 49"/>
+      <path d="M17 121C30 118 50 118 63 121L64 167C50 170 30 170 16 167Z"/>
+      <path d="M23 150C26 140 29 156 32 146C35 138 37 156 40 146C43 139 45 155 48 146C51 140 54 154 57 146"/>
+      <path d="M28 160L52 159"/>
+      <path fill="currentColor" d="M40 128C37 125 34 128 36 131C37 133 39 134 40 135C41 134 43 133 44 131C46 128 43 125 40 128Z"/>
+      <path d="M21 96C19 101 18 106 18 110"/>
+    </g>
+
+    <g id="i-cup">
+      <path d="M-26 0C-25 20 -14 31 0 31C14 31 25 20 26 0"/>
+      <path d="M-26 0C-16 -5 16 -5 26 0C16 5 -16 5 -26 0Z"/>
+      <path d="M-21 12C-10 17 10 17 21 12"/>
+      <path d="M0 31C-1 46 1 62 0 78"/>
+      <path d="M-15 83C-10 77 10 77 15 83C10 87 -10 87 -15 83Z"/>
+    </g>
+
+    <g id="i-clink">
+      <use href="#i-cup" transform="translate(50 26) rotate(18)"/>
+      <g transform="translate(102 28) rotate(-18)">
+        <use href="#i-cup"/>
+        <path d="M0 52C-8 44 -17 46 -16 52C-15 58 -7 58 0 52C8 44 17 46 16 52C15 58 7 58 0 52Z"/>
+        <path d="M-1 54L-8 67M1 54L9 66"/>
+      </g>
+      <path d="M76 24L76 12M65 26L59 16M87 26L93 16"/>
+    </g>
+
+    <g id="i-disco">
+      <path d="M60 1C61 11 59 21 60 32"/>
+      <path d="M60 32C87 31 108 53 108 80C108 107 87 129 60 128C33 129 12 107 12 80C12 53 33 31 60 32Z"/>
+      <path d="M22 52C42 61 78 61 98 52"/>
+      <path d="M14 69C40 80 80 80 106 69"/>
+      <path d="M13 88C40 100 80 100 107 88"/>
+      <path d="M21 107C43 118 77 118 99 107"/>
+      <path d="M60 32C62 64 62 98 60 128"/>
+      <path d="M43 36C31 64 31 98 44 125"/>
+      <path d="M77 36C89 64 89 98 76 125"/>
+      <path d="M28 45C13 68 14 96 29 118"/>
+      <path d="M92 45C107 68 106 96 91 118"/>
+    </g>
+
+    <g id="i-bow">
+      <path d="M50 38C38 16 10 8 7 26C4 44 30 52 50 44"/>
+      <path d="M60 38C72 16 100 8 103 26C106 44 80 52 60 44"/>
+      <path d="M50 36C52 32 58 32 60 36C62 41 60 46 55 47C50 46 48 41 50 36Z"/>
+      <path d="M49 46C44 60 34 74 20 84L28 85L25 92C40 80 50 64 55 48"/>
+      <path d="M61 46C66 60 76 74 90 84L82 85L85 92C70 80 60 64 55 48"/>
+      <path d="M44 37C34 30 22 26 14 28M66 37C76 30 88 26 96 28"/>
+    </g>
+
+    <g id="i-letter">
+      <path d="M6 11C34 8 66 8 94 11L95 66C66 69 34 69 5 66Z"/>
+      <path d="M6 11C22 29 38 41 50 45C62 41 78 29 94 11"/>
+      <path d="M5 66C18 54 28 46 37 40M95 66C82 54 72 46 63 40"/>
+      <path fill="currentColor" d="M50 39C45 33 39 37 42 43C44 47 47 49 50 52C53 49 56 47 58 43C61 37 55 33 50 39Z"/>
+    </g>
+
+    <g id="i-cherry">
+      <path d="M20 44C12 43 6 49 7 56C8 63 15 67 21 65C28 63 31 56 29 50C27 46 24 44 20 44Z"/>
+      <path d="M44 40C37 40 32 46 33 53C34 60 41 63 47 61C53 59 56 52 53 46C51 42 48 40 44 40Z"/>
+      <path d="M20 44C22 30 28 16 40 6C43 16 44 28 44 40"/>
+      <path d="M40 6C46 0 55 2 58 8C52 12 45 11 40 6Z"/>
+      <path d="M12 55C12 52 14 50 16 49M38 51C38 48 40 46 42 45"/>
+    </g>
+
+    <g id="i-pop">
+      <path d="M17 31C13 25 17 17 24 14L33 23C31 29 24 34 17 31Z"/>
+      <path d="M9 42L15 36M5 31L12 29M19 46L21 39"/>
+      <circle cx="40" cy="10" r="3"/><circle cx="45" cy="23" r="2"/><circle cx="30" cy="5" r="2"/>
+    </g>
+  </defs>
+</svg>
+
+<main class="card" id="card" data-step="1">
+
+  <!-- ══════ doodles · screen 1 ══════ -->
+  <div class="doodles for-1" aria-hidden="true">
+    <div class="d" style="--x:8;--y:4;--w:15;--r:-8deg;--i:0"><svg viewBox="0 0 80 200" style="--sw:2.8"><use href="#i-bottle"/></svg></div>
+    <div class="d" style="--x:-6;--y:19;--w:15;--r:-10deg;--i:1"><svg viewBox="-32 -8 64 100" style="--sw:2.3"><use href="#i-cup"/></svg></div>
+    <div class="d" style="--x:28;--y:5;--w:7;--i:2"><svg viewBox="0 0 40 40" style="--sw:3"><use href="#i-burst"/></svg></div>
+    <div class="d" style="--x:53;--y:8;--w:9;--r:12deg;--i:3"><svg viewBox="0 0 44 42" style="--sw:2.5"><use href="#i-scribble"/></svg></div>
+    <div class="d r" style="--x:3;--y:-3;--w:28;--i:4"><svg class="swing" viewBox="0 0 120 132" style="--sw:2.2"><use href="#i-disco"/></svg></div>
+    <div class="d" style="--x:61;--y:22;--w:4.5;--i:5"><svg class="twinkle" viewBox="0 0 40 40" style="--sw:4.2;--dl:-.8s"><use href="#i-spark"/></svg></div>
+    <div class="d r" style="--x:2;--y:35;--w:5;--i:6"><svg class="twinkle" viewBox="0 0 40 40" style="--dl:-1.6s"><use href="#i-spark" class="f"/></svg></div>
+    <div class="d" style="--x:27;--y:25;--w:4.5;--i:7"><svg viewBox="0 0 40 40"><use href="#i-spark" class="f"/></svg></div>
+
+    <div class="d b" style="--x:3;--y:47;--w:6;--r:10deg;--i:8"><svg viewBox="0 0 40 38" style="--sw:3.2"><use href="#i-heart"/></svg></div>
+    <div class="d b" style="--x:6;--y:27;--w:19;--r:-14deg;--i:9"><svg viewBox="0 0 110 96" style="--sw:2.9"><use href="#i-bow"/></svg></div>
+    <div class="d b" style="--x:9;--y:10;--w:18;--r:-9deg;--i:10"><svg viewBox="0 0 100 76" style="--sw:2.8"><use href="#i-letter"/></svg></div>
+    <div class="d b" style="--x:30;--y:25;--w:5;--r:14deg;--i:11"><svg viewBox="0 0 40 38"><use href="#i-heart" class="f"/></svg></div>
+    <div class="d b" style="--x:38;--y:13;--w:11;--r:8deg;--i:12"><svg viewBox="0 0 60 70" style="--sw:2.8"><use href="#i-cherry"/></svg></div>
+    <div class="d r b" style="--x:-3;--y:9;--w:39;--i:13"><svg viewBox="0 0 150 124" style="--sw:2"><use href="#i-clink"/></svg></div>
+    <div class="d r b" style="--x:37;--y:36;--w:5;--i:14"><svg class="twinkle" viewBox="0 0 40 40" style="--sw:4;--dl:-2.2s"><use href="#i-spark"/></svg></div>
+  </div>
+
+  <!-- ══════ doodles · screen 2 ══════ -->
+  <div class="doodles for-2" aria-hidden="true">
+    <div class="d" style="--x:4;--y:-3;--w:19;--i:0"><svg class="swing" viewBox="0 0 120 132" style="--sw:3.1"><use href="#i-disco"/></svg></div>
+    <div class="d" style="--x:27;--y:7;--w:5;--i:1"><svg class="twinkle" viewBox="0 0 40 40"><use href="#i-spark" class="f"/></svg></div>
+    <div class="d r" style="--x:27;--y:4;--w:6;--i:2"><svg viewBox="0 0 40 40" style="--sw:3.3"><use href="#i-burst"/></svg></div>
+    <div class="d r" style="--x:5;--y:6;--w:17;--r:14deg;--i:3"><svg viewBox="0 0 110 96" style="--sw:3.2"><use href="#i-bow"/></svg></div>
+    <div class="d b" style="--x:2;--y:3;--w:12;--r:22deg;--i:4"><svg viewBox="0 0 80 200" style="--sw:3.3"><use href="#i-bottle"/></svg></div>
+    <div class="d b" style="--x:21;--y:27;--w:9;--i:5"><svg viewBox="0 0 50 50" style="--sw:2.8"><use href="#i-pop"/></svg></div>
+    <div class="d b" style="--x:44;--y:5;--w:10;--r:-6deg;--i:6"><svg viewBox="0 0 60 70" style="--sw:3"><use href="#i-cherry"/></svg></div>
+    <div class="d r b" style="--x:-2;--y:3;--w:33;--i:7"><svg viewBox="0 0 150 124" style="--sw:2.3"><use href="#i-clink"/></svg></div>
+  </div>
+
+  <!-- ══════ screen 1 · the question ══════ -->
+  <section class="step" id="s1" aria-labelledby="q">
+    <div class="copy" id="copy">
+      <p class="eyebrow rise" style="--i:0">
+        <svg viewBox="0 0 40 40" aria-hidden="true"><use href="#i-spark"/></svg>
+        hello
+        <svg viewBox="0 0 40 40" aria-hidden="true"><use href="#i-spark"/></svg>
+      </p>
+
+      <!-- ✏️ her name -->
+      <p class="name" data-fit><span class="write" style="--i:2">pyari Jiya</span><svg class="heart" viewBox="0 0 40 38" aria-hidden="true"><use href="#i-heart"/><path d="M11 12C9 13 8 15 8 17" fill="none" stroke="#fff6f1" stroke-width="2.6" stroke-linecap="round"/></svg></p>
+
+      <h1 class="question" id="q">
+        <span class="ask rise" style="--i:6">are you ready<br>for our little</span>
+        <span class="title" data-fit><span class="write" style="--i:8">Date Eve?</span><svg class="tw twinkle" viewBox="0 0 40 40" aria-hidden="true"><use href="#i-spark"/></svg></span>
+      </h1>
+    </div>
+
+    <div class="choices rise" style="--i:14">
+      <button class="btn yes" id="yes" type="button"><span class="face">yes!</span></button>
+      <span class="slot" id="slot">
+        <button class="btn no" id="no" type="button"><span class="face" id="noText">no</span></button>
+      </span>
+    </div>
+
+    <p class="hint" id="hint" aria-live="polite">psst… “no” isn’t on the menu tonight</p>
+    <p class="rsvp rise" style="--i:17">rsvp with a yes &lt;3</p>
+  </section>
+
+  <!-- ══════ screen 2 · after the yes ══════ -->
+  <section class="step" id="s2" aria-hidden="true">
+    <h2 class="yay" id="yay" tabindex="-1" data-fit><span class="write" style="--i:0">It’s a date!</span></h2>
+
+    <div class="zone">
+      <div class="sticker" id="sticker">
+        <svg class="kitty" viewBox="-16 16 340 366" role="img" aria-label="A kitten in pink glasses and a gingham bow, holding a bouquet of pink tulips">
+          <defs>
+            <pattern id="k-ging" width="12" height="12" patternUnits="userSpaceOnUse">
+              <rect width="12" height="12" fill="#fff3f6"/>
+              <rect width="6" height="12" fill="#f58fb3" opacity=".42"/>
+              <rect width="12" height="6" fill="#f58fb3" opacity=".42"/>
+            </pattern>
+            <path id="k-head" d="M186 72C236 72 282 100 284 150C285 160 284 168 281 176L292 181L279 187L287 197L273 199C258 222 224 232 186 232C148 232 114 222 99 199L85 197L93 187L80 181L91 176C88 168 87 160 88 150C90 100 136 72 186 72Z"/>
+            <path id="k-earL" d="M101 120C92 80 96 50 106 40C126 46 148 64 162 86Z"/>
+            <path id="k-earR" d="M271 120C280 80 276 50 266 40C246 46 224 64 210 86Z"/>
+            <path id="k-body" d="M120 236C100 286 102 346 134 358L238 358C270 346 272 286 252 236Z"/>
+            <path id="k-collar" d="M110 214C128 232 158 237 186 237C214 237 244 232 262 214C272 228 276 244 274 258C250 274 216 282 186 282C156 282 122 274 98 258C96 244 100 228 110 214Z"/>
+            <path id="k-paper" d="M102 342L0 302C-5 272 9 242 30 228C48 238 62 214 84 214C101 220 118 236 124 252C126 288 118 320 102 342Z"/>
+            <path id="k-tulip" d="M-17 -6C-18 -22 -8 -27 0 -24C8 -27 18 -22 17 -6C16 12 8 20 0 20C-8 20 -16 12 -17 -6Z"/>
+            <path id="k-bow" d="M-5 0C-18 -24 -50 -26 -52 -6C-54 14 -22 20 -5 7ZM5 0C18 -24 50 -26 52 -6C54 14 22 20 5 7ZM-9 -7C-9 -12 9 -12 9 -7L9 11C9 16 -9 16 -9 11Z"/>
+            <path id="k-tails" d="M-3 4C-8 16 -14 24 -22 30L-12 30L-10 37C-4 27 0 16 1 5ZM3 4C8 16 14 24 22 30L12 30L10 37C4 27 0 16 -1 5Z"/>
+            <ellipse id="k-paw" rx="22" ry="12.5"/>
+            <g id="k-bloom">
+              <use href="#k-tulip" fill="#f8a8c0" stroke="#e98bab" stroke-width="1.6"/>
+              <path d="M0 -24C-9 -12 -9 8 0 20C9 8 9 -12 0 -24Z" fill="#fdd0dd" stroke="#e98bab" stroke-width="1.2"/>
+            </g>
+          </defs>
+
+          <!-- white die-cut edge -->
+          <g fill="#fff" stroke="#fff" stroke-width="14" stroke-linejoin="round" stroke-linecap="round">
+            <use href="#k-earL"/><use href="#k-earR"/><use href="#k-body"/><use href="#k-collar"/><use href="#k-head"/>
+            <use href="#k-paw" x="164" y="354"/><use href="#k-paw" x="212" y="354"/>
+            <use href="#k-paper"/>
+            <use href="#k-tulip" transform="translate(26 286) rotate(-62)"/>
+            <use href="#k-tulip" transform="translate(38 250) rotate(-40)"/>
+            <use href="#k-tulip" transform="translate(62 222) rotate(-24)"/>
+            <use href="#k-tulip" transform="translate(92 226) rotate(-6)"/>
+            <use href="#k-tulip" transform="translate(70 262) rotate(-22)"/>
+            <path d="M98 330L112 370M98 330L104 372M98 330L120 366"/>
+            <g transform="translate(256 80) rotate(24) scale(.82)"><use href="#k-bow"/></g>
+            <g transform="translate(98 337) rotate(-14)"><use href="#k-tails"/><use href="#k-bow" transform="scale(.5)"/></g>
+          </g>
+
+          <!-- ears -->
+          <g fill="#aba49e" stroke="#9a8f88" stroke-width="2" stroke-linejoin="round">
+            <use href="#k-earL"/><use href="#k-earR"/>
+          </g>
+          <path d="M110 108C104 84 106 64 112 54C126 60 140 72 150 86Z" fill="#f9c6ce"/>
+          <path d="M262 108C268 84 266 64 260 54C246 60 232 72 222 86Z" fill="#f9c6ce"/>
+
+          <!-- body -->
+          <use href="#k-body" fill="#fffaf5"/>
+          <path d="M252 237C271 286 270 345 238 357L226 357C250 334 252 284 240 240Z" fill="#aba49e"/>
+          <path d="M120 237C101 286 102 345 134 357L146 357C122 334 120 284 132 240Z" fill="#aba49e"/>
+          <use href="#k-body" fill="none" stroke="#9a8f88" stroke-width="2" stroke-linejoin="round"/>
+          <g fill="#fffaf5" stroke="#9a8f88" stroke-width="2">
+            <use href="#k-paw" x="164" y="354"/><use href="#k-paw" x="212" y="354"/>
+          </g>
+          <path d="M157 351L157 360M171 351L171 360M205 351L205 360M219 351L219 360" fill="none" stroke="#c9bdb5" stroke-width="2" stroke-linecap="round"/>
+
+          <!-- lace + gingham collar -->
+          <g fill="#fff" stroke="#f3b9c9" stroke-width="1.2">
+            <circle cx="102" cy="260.1" r="8.5"/><circle cx="116" cy="266.8" r="8.5"/><circle cx="130" cy="272.3" r="8.5"/>
+            <circle cx="144" cy="276.5" r="8.5"/><circle cx="158" cy="279.6" r="8.5"/><circle cx="172" cy="281.4" r="8.5"/>
+            <circle cx="186" cy="282" r="8.5"/><circle cx="200" cy="281.4" r="8.5"/><circle cx="214" cy="279.6" r="8.5"/>
+            <circle cx="228" cy="276.5" r="8.5"/><circle cx="242" cy="272.3" r="8.5"/><circle cx="256" cy="266.8" r="8.5"/>
+            <circle cx="270" cy="260.1" r="8.5"/>
+          </g>
+          <g fill="#f5a9bf">
+            <circle cx="102" cy="264.6" r="1.7"/><circle cx="116" cy="271.3" r="1.7"/><circle cx="130" cy="276.8" r="1.7"/>
+            <circle cx="144" cy="281" r="1.7"/><circle cx="158" cy="284.1" r="1.7"/><circle cx="172" cy="285.9" r="1.7"/>
+            <circle cx="186" cy="286.5" r="1.7"/><circle cx="200" cy="285.9" r="1.7"/><circle cx="214" cy="284.1" r="1.7"/>
+            <circle cx="228" cy="281" r="1.7"/><circle cx="242" cy="276.8" r="1.7"/><circle cx="256" cy="271.3" r="1.7"/>
+            <circle cx="270" cy="264.6" r="1.7"/>
+          </g>
+          <use href="#k-collar" fill="url(#k-ging)" stroke="#ee86a9" stroke-width="1.6" stroke-linejoin="round"/>
+          <circle cx="138" cy="256" r="3.2" fill="#f0688f"/><circle cx="143" cy="259" r="1.8" fill="#8fc27a"/>
+          <circle cx="234" cy="256" r="3.2" fill="#f0688f"/><circle cx="229" cy="259" r="1.8" fill="#8fc27a"/>
+          <g transform="translate(186 248) scale(.34)">
+            <use href="#k-bow" fill="#f78fb3" stroke="#e0709a" stroke-width="4" stroke-linejoin="round"/>
+          </g>
+          <path d="M186 254L186 261" stroke="#e2a640" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M186 263C183 259 178 261 179 266C180 270 184 272 186 275C188 272 192 270 193 266C194 261 189 259 186 263Z" fill="#ffc9d6" stroke="#e2a640" stroke-width="2" stroke-linejoin="round"/>
+
+          <!-- head -->
+          <use href="#k-head" fill="#fffaf5"/>
+          <path d="M91 176C88 168 87 160 88 150C90 100 136 72 186 72C236 72 282 100 284 150C285 160 284 168 281 176C268 186 244 188 222 180C208 172 200 150 196 124C194 112 190 102 186 98C182 102 178 112 176 124C172 150 164 172 150 180C128 188 104 186 91 176Z" fill="#aba49e"/>
+          <use href="#k-head" fill="none" stroke="#9a8f88" stroke-width="2" stroke-linejoin="round"/>
+          <g fill="none" stroke="#7b736d" stroke-width="5" stroke-linecap="round" opacity=".85">
+            <path d="M186 77C185 83 185 90 186 95"/>
+            <path d="M169 79C167 88 169 98 173 106"/>
+            <path d="M203 79C205 88 203 98 199 106"/>
+            <path d="M151 85C149 93 151 101 155 109"/>
+            <path d="M221 85C223 93 221 101 217 109"/>
+          </g>
+
+          <!-- face -->
+          <ellipse cx="112" cy="192" rx="11" ry="6.5" fill="#ffb3c8" opacity=".6"/>
+          <ellipse cx="260" cy="192" rx="11" ry="6.5" fill="#ffb3c8" opacity=".6"/>
+          <g class="eyes">
+            <circle cx="142" cy="152" r="22" fill="#3a2a23"/><circle cx="142" cy="152" r="18.5" fill="#150e0c"/>
+            <circle cx="134" cy="144" r="7" fill="#fff"/><circle cx="150" cy="161" r="3.2" fill="#fff" opacity=".85"/>
+            <circle cx="230" cy="152" r="22" fill="#3a2a23"/><circle cx="230" cy="152" r="18.5" fill="#150e0c"/>
+            <circle cx="222" cy="144" r="7" fill="#fff"/><circle cx="238" cy="161" r="3.2" fill="#fff" opacity=".85"/>
+          </g>
+          <path d="M110 198C101 197 94 197 87 199M111 205C103 207 97 210 91 214M262 198C271 197 278 197 285 199M261 205C269 207 275 210 281 214" fill="none" stroke="#c9bdb5" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M179 178C182 175 190 175 193 178C192 184 188 187 186 187C184 187 180 184 179 178Z" fill="#f28aa8"/>
+          <path d="M186 187L186 192M186 192C181 199 171 199 166 193M186 192C191 199 201 199 206 193" fill="none" stroke="#b9727f" stroke-width="2.4" stroke-linecap="round"/>
+
+          <!-- pink glasses -->
+          <g fill="#ffd9e5" fill-opacity=".3" stroke="#f78fb3" stroke-width="6.5">
+            <ellipse cx="142" cy="152" rx="37" ry="31"/><ellipse cx="230" cy="152" rx="37" ry="31"/>
+          </g>
+          <path d="M178 146C182 139 190 139 194 146" fill="none" stroke="#f78fb3" stroke-width="6.5" stroke-linecap="round"/>
+          <path d="M106 143L92 138M266 143L280 138" fill="none" stroke="#f78fb3" stroke-width="5" stroke-linecap="round"/>
+          <path d="M116 138C122 128 131 124 141 124M204 138C210 128 219 124 229 124" fill="none" stroke="#ffe3ec" stroke-width="2.2" stroke-linecap="round"/>
+          <g fill="#ff9dc0" stroke="#f47aa6" stroke-width=".8">
+            <circle cx="112" cy="125.5" r="4.6"/><circle cx="117.2" cy="129.3" r="4.6"/><circle cx="115.2" cy="135.5" r="4.6"/><circle cx="108.8" cy="135.5" r="4.6"/><circle cx="106.8" cy="129.3" r="4.6"/>
+            <circle cx="260" cy="125.5" r="4.6"/><circle cx="265.2" cy="129.3" r="4.6"/><circle cx="263.2" cy="135.5" r="4.6"/><circle cx="256.8" cy="135.5" r="4.6"/><circle cx="254.8" cy="129.3" r="4.6"/>
+          </g>
+          <circle cx="112" cy="131" r="3" fill="#ffe59a"/><circle cx="260" cy="131" r="3" fill="#ffe59a"/>
+
+          <!-- tongue out -->
+          <path d="M187 195C192 207 210 209 217 199C222 191 216 184 208 187C202 190 195 193 187 195Z" fill="#f47c9f" stroke="#dd6189" stroke-width="1.5" stroke-linejoin="round"/>
+          <path d="M196 198C203 201 210 198 213 192" fill="none" stroke="#e0668f" stroke-width="1.4" stroke-linecap="round"/>
+
+          <!-- gingham bow on the ear -->
+          <g transform="translate(256 80) rotate(24) scale(.82)">
+            <use href="#k-bow" fill="url(#k-ging)" stroke="#ee86a9" stroke-width="2.4" stroke-linejoin="round"/>
+            <path d="M-13 1C-24 -6 -36 -8 -44 -5M13 1C24 -6 36 -8 44 -5" fill="none" stroke="#ee86a9" stroke-width="1.6" stroke-linecap="round"/>
+          </g>
+
+          <!-- tulip bouquet -->
+          <use href="#k-paper" fill="#ffe7ed" stroke="#f5b5c6" stroke-width="1.6" stroke-linejoin="round"/>
+          <g fill="none" stroke="#7fb069" stroke-width="4" stroke-linecap="round">
+            <path d="M51 265Q80 294 98 330"/><path d="M70 240Q90 284 98 330"/><path d="M94 246Q100 288 98 330"/>
+            <path d="M44 295Q74 308 98 330"/><path d="M77.5 280.5Q90 304 98 330"/>
+            <path d="M98 330L112 370M98 330L104 372M98 330L120 366"/>
+          </g>
+          <path d="M96 328C74 318 58 302 56 282C74 290 90 306 96 328Z" fill="#93c47d"/>
+          <path d="M100 326C106 304 112 282 122 266C126 288 116 312 100 326Z" fill="#7fb069"/>
+          <use href="#k-bloom" transform="translate(26 286) rotate(-62)"/>
+          <use href="#k-bloom" transform="translate(38 250) rotate(-40)"/>
+          <use href="#k-bloom" transform="translate(62 222) rotate(-24)"/>
+          <use href="#k-bloom" transform="translate(92 226) rotate(-6)"/>
+          <use href="#k-bloom" transform="translate(70 262) rotate(-22)"/>
+          <path d="M102 342L26 314C44 310 62 300 72 286C86 302 98 322 102 342Z" fill="#ffd5df" stroke="#f5b5c6" stroke-width="1.4" stroke-linejoin="round" opacity=".92"/>
+          <path d="M102 342C104 316 112 294 124 278C128 300 120 324 102 342Z" fill="#ffdfe7" stroke="#f5b5c6" stroke-width="1.4" stroke-linejoin="round" opacity=".92"/>
+
+          <!-- the paw doing the holding -->
+          <g transform="translate(122 316) rotate(-20)">
+            <ellipse rx="16" ry="11.5" fill="#fffaf5" stroke="#9a8f88" stroke-width="2"/>
+            <path d="M-5 -2L-5 6M3 -2L3 6" fill="none" stroke="#c9bdb5" stroke-width="2" stroke-linecap="round"/>
+          </g>
+          <g transform="translate(98 337) rotate(-14)">
+            <use href="#k-tails" fill="url(#k-ging)" stroke="#ee86a9" stroke-width="1.6" stroke-linejoin="round"/>
+            <use href="#k-bow" transform="scale(.5)" fill="url(#k-ging)" stroke="#ee86a9" stroke-width="3.4" stroke-linejoin="round"/>
+          </g>
+        </svg>
+      </div>
+
+      <!-- the kitty asks -->
+      <div class="bubble">
+        <svg viewBox="0 0 216 132" aria-hidden="true"><path d="M24 9C72 3 140 4 176 10C192 13 196 34 196 58C196 76 194 90 189 98L211 123L168 110C140 114 96 115 58 113C34 112 12 108 7 86C3 62 5 18 24 9Z" fill="#fff6f1" stroke="#e3403c" stroke-width="3.2" stroke-linejoin="round"/></svg>
+        <p><span>tell me the <b>venue &amp; time</b>, pretty girl</span></p>
+      </div>
+
+      <div class="d" aria-hidden="true" style="--x:66;--y:9;--w:6;--i:9"><svg viewBox="0 0 40 40" style="--sw:3.2"><use href="#i-dash"/></svg></div>
+      <div class="d" aria-hidden="true" style="--x:65;--y:27;--w:7;--r:16deg;--i:10"><svg viewBox="0 0 40 38" style="--sw:3"><use href="#i-heart"/></svg></div>
+      <div class="d" aria-hidden="true" style="--x:68;--y:39;--w:4.5;--r:-10deg;--i:11"><svg viewBox="0 0 40 38"><use href="#i-heart" class="f"/></svg></div>
+      <div class="d" aria-hidden="true" style="--x:-7;--y:27;--w:6;--r:-18deg;--i:12"><svg viewBox="0 0 40 38" style="--sw:3.2"><use href="#i-heart"/></svg></div>
+    </div>
+
+    <p class="waiting" data-fit><span class="write" style="--i:11">I’m waiting for you</span><svg class="heart" viewBox="0 0 40 38" aria-hidden="true"><use href="#i-heart"/><path d="M11 12C9 13 8 15 8 17" fill="none" stroke="#fff6f1" stroke-width="2.6" stroke-linecap="round"/></svg></p>
+  </section>
+</main>
+
+<canvas id="blast" aria-hidden="true"></canvas>
+
+<script>
+(() => {
+  /* ✏️ OPTIONAL — want your exact sticker photo instead of the drawn kitty?
+     Paste its link between the quotes (or its file name, if it sits next to this page). */
+  const CAT_IMG = "";
+
+  const $ = (s, r = document) => r.querySelector(s);
+  const card = $('#card'), s1 = $('#s1'), s2 = $('#s2');
+  const yes = $('#yes'), no = $('#no'), slot = $('#slot'), noText = $('#noText');
+  const hint = $('#hint'), copy = $('#copy'), sticker = $('#sticker');
+  const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ── your own sticker (optional) ── */
+  if (CAT_IMG) {
+    const img = new Image();
+    img.className = 'photo';
+    img.alt = 'A kitten holding a bouquet of pink tulips';
+    img.onload = () => { $('.kitty', sticker).replaceWith(img); };
+    img.src = CAT_IMG;
+  }
+
+  /* ── keep the script lines inside the card, whichever font loads ── */
+  function fit() {
+    const avail = card.clientWidth * 0.9;
+    document.querySelectorAll('[data-fit]').forEach(el => {
+      el.style.fontSize = '';
+      const w = el.offsetWidth;
+      if (w > avail) el.style.fontSize = (parseFloat(getComputedStyle(el).fontSize) * avail / w).toFixed(2) + 'px';
+    });
+  }
+  fit();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+  window.addEventListener('load', fit);
+
+  /* ── the "no" that runs away ── */
+  const quips = ['no', 'nope', 'oops!', 'too slow', 'hehe', 'try again', 'nice try', 'not today', 'almost!', 'just say yes'];
+  let dodges = 0, lastDodge = 0;
+  const box = (el, c) => {
+    const r = el.getBoundingClientRect();
+    return { l: r.left - c.left, t: r.top - c.top, r: r.right - c.left, b: r.bottom - c.top };
+  };
+
+  function dodge(px, py) {
+    if (card.dataset.step !== '1') return;
+    const now = performance.now();
+    if (now - lastDodge < 170) return;
+    lastDodge = now;
+    dodges++;
+    noText.textContent = quips[dodges % quips.length];
+
+    const c = card.getBoundingClientRect();
+    const W = c.width, H = c.height, pad = W * 0.035;
+    const home = box(slot, c), here = box(no, c), y = box(yes, c), txt = box(copy, c);
+    const hx = (home.l + home.r) / 2, hy = (home.t + home.b) / 2;
+    const cx0 = (here.l + here.r) / 2, cy0 = (here.t + here.b) / 2;
+    const bw = no.offsetWidth * 1.08, bh = no.offsetHeight * 1.3;   // a little room for the tilt
+    const ptr = { x: px - c.left, y: py - c.top };
+
+    let best = null, top = -Infinity;
+    for (let i = 0; i < 36; i++) {
+      const cx = pad + bw / 2 + Math.random() * Math.max(1, W - bw - pad * 2);
+      const cy = pad + bh / 2 + Math.random() * Math.max(1, H - bh - pad * 2);
+      const l = cx - bw / 2, r = cx + bw / 2, t = cy - bh / 2, b = cy + bh / 2;
+      if (l < y.r + 16 && r > y.l - 16 && t < y.b + 16 && b > y.t - 16) continue;   // never sits on "yes"
+      const onText = l < txt.r && r > txt.l && t < txt.b && b > txt.t;
+      const score = Math.min(Math.hypot(cx - ptr.x, cy - ptr.y), W * 0.6)
+                  + Math.min(Math.hypot(cx - cx0, cy - cy0), W * 0.45) * 0.6
+                  - (onText ? W : 0) + Math.random() * 24;
+      if (score > top) { top = score; best = { x: cx, y: cy }; }
+    }
+    if (!best) return;
+
+    no.style.setProperty('--dx', (best.x - hx).toFixed(1) + 'px');
+    no.style.setProperty('--dy', (best.y - hy).toFixed(1) + 'px');
+    no.style.setProperty('--tilt', (Math.random() * 22 - 11).toFixed(1) + 'deg');
+    yes.style.setProperty('--grow', Math.min(1 + dodges * 0.045, 1.3).toFixed(3));
+    hint.classList.add('show');
+  }
+
+  // mouse: scoots away before the cursor arrives
+  window.addEventListener('pointermove', e => {
+    if (e.pointerType !== 'mouse' || card.dataset.step !== '1') return;
+    const r = no.getBoundingClientRect();
+    const dx = Math.max(r.left - e.clientX, 0, e.clientX - r.right);
+    const dy = Math.max(r.top - e.clientY, 0, e.clientY - r.bottom);
+    if (dx * dx + dy * dy < 36 * 36) dodge(e.clientX, e.clientY);
+  });
+  // finger: jumps the moment it is touched, so the tap never lands
+  no.addEventListener('pointerdown', e => { e.preventDefault(); dodge(e.clientX, e.clientY); });
+  no.addEventListener('touchstart', e => {
+    e.preventDefault();
+    const t = e.touches[0];
+    if (t) dodge(t.clientX, t.clientY);
+  }, { passive: false });
+  // keyboard, or a very quick click
+  no.addEventListener('click', e => {
+    e.preventDefault();
+    const r = no.getBoundingClientRect();
+    dodge(r.left + r.width / 2, r.top + r.height / 2);
+  });
+
+  /* ── the blast ── */
+  const cvs = $('#blast'), ctx = cvs.getContext('2d');
+  const COLORS = ['#e3403c', '#ff6f91', '#ff9db5', '#ffc2d1', '#ffffff', '#ffd166', '#f78fb3'];
+  const SHAPES = ['heart', 'heart', 'heart', 'dot', 'ribbon', 'ribbon', 'spark'];
+  const pick = a => a[(Math.random() * a.length) | 0];
+  let parts = [], raf = 0, prev = 0, DPR = 1;
+
+  function size() {
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    cvs.width = Math.round(window.innerWidth * DPR);
+    cvs.height = Math.round(window.innerHeight * DPR);
+  }
+  size();
+
+  function spawn(x, y, vx, vy, o) {
+    parts.push(Object.assign({
+      x, y, vx, vy, g: 0.34, drag: 0.975,
+      rot: Math.random() * 6.28, vr: (Math.random() - 0.5) * 0.3,
+      size: 5 + Math.random() * 9, color: pick(COLORS), shape: pick(SHAPES),
+      age: 0, ttl: 120 + Math.random() * 80,
+      ws: 0.04 + Math.random() * 0.08, wo: Math.random() * 6.28, wa: Math.random() * 1.1
+    }, o || {}));
+  }
+
+  function burst(x, y, n, o) {
+    o = o || {};
+    const angle = o.angle == null ? -Math.PI / 2 : o.angle;
+    const spread = o.spread == null ? Math.PI * 2 : o.spread;
+    const power = o.power || 14;
+    for (let i = 0; i < n; i++) {
+      const a = angle + (Math.random() - 0.5) * spread;
+      const v = power * (0.3 + Math.random() * 0.8);
+      spawn(x, y, Math.cos(a) * v, Math.sin(a) * v - (spread > 6 ? 3 : 0), o.extra);
+    }
+    go();
+  }
+
+  function rain(ms) {
+    const end = performance.now() + ms;
+    (function drop() {
+      const c = card.getBoundingClientRect();
+      for (let i = 0; i < 2; i++) {
+        spawn(c.left + Math.random() * c.width, c.top - 16, (Math.random() - 0.5) * 1.2, 1.5 + Math.random() * 2.2, {
+          g: 0.012, drag: 1, shape: 'heart', size: 5 + Math.random() * 7, ttl: 460, wa: 0.8,
+          rot: (Math.random() - 0.5) * 0.6, vr: (Math.random() - 0.5) * 0.02
+        });
+      }
+      go();
+      if (performance.now() < end) setTimeout(drop, 90);
+    })();
+  }
+
+  function go() {
+    if (!raf) { prev = performance.now(); raf = requestAnimationFrame(frame); }
+  }
+
+  function frame(t) {
+    const dt = Math.min((t - prev) / 16.67, 2.4);
+    prev = t;
+    const VW = window.innerWidth, VH = window.innerHeight;
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    ctx.clearRect(0, 0, VW, VH);
+
+    for (let i = parts.length - 1; i >= 0; i--) {
+      const p = parts[i];
+      p.age += dt;
+      if (p.age > p.ttl || p.y > VH + 40) { parts.splice(i, 1); continue; }
+      const d = Math.pow(p.drag, dt);
+      p.vx *= d;
+      p.vy = p.vy * d + p.g * dt;
+      p.x += (p.vx + Math.sin(p.age * p.ws + p.wo) * p.wa) * dt;
+      p.y += p.vy * dt;
+      p.rot += p.vr * dt;
+
+      const s = p.size;
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, Math.min(1, (p.ttl - p.age) / 22));
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot);
+      ctx.fillStyle = p.color;
+      ctx.beginPath();
+      if (p.shape === 'heart') {
+        ctx.moveTo(0, s * 0.9);
+        ctx.bezierCurveTo(-s * 1.25, s * 0.05, -s * 0.7, -s * 0.95, 0, -s * 0.3);
+        ctx.bezierCurveTo(s * 0.7, -s * 0.95, s * 1.25, s * 0.05, 0, s * 0.9);
+      } else if (p.shape === 'spark') {
+        ctx.moveTo(0, -s);
+        ctx.quadraticCurveTo(0, 0, s, 0);
+        ctx.quadraticCurveTo(0, 0, 0, s);
+        ctx.quadraticCurveTo(0, 0, -s, 0);
+        ctx.quadraticCurveTo(0, 0, 0, -s);
+      } else if (p.shape === 'ribbon') {
+        ctx.scale(1, Math.cos(p.age * 0.22 + p.wo));
+        ctx.rect(-s * 0.9, -s * 0.32, s * 1.8, s * 0.64);
+      } else {
+        ctx.arc(0, 0, s * 0.5, 0, 6.2832);
+      }
+      ctx.fill();
+      ctx.restore();
+    }
+
+    if (parts.length) raf = requestAnimationFrame(frame);
+    else { raf = 0; ctx.clearRect(0, 0, VW, VH); }
+  }
+
+  function ring(x, y) {
+    const el = document.createElement('i');
+    el.className = 'ring';
+    el.style.left = x + 'px';
+    el.style.top = y + 'px';
+    document.body.appendChild(el);
+    el.addEventListener('animationend', () => el.remove());
+  }
+
+  /* ── yes! ── */
+  yes.addEventListener('click', () => {
+    if (card.dataset.step !== '1') return;
+    const r = yes.getBoundingClientRect(), c = card.getBoundingClientRect();
+    const x = r.left + r.width / 2, y = r.top + r.height / 2;
+
+    card.dataset.step = '2';
+    s1.setAttribute('aria-hidden', 'true');
+    s1.setAttribute('inert', '');
+    s2.removeAttribute('aria-hidden');
+
+    ring(x, y);
+    burst(x, y, calm ? 36 : 150, { power: 17 });
+    if (!calm) {
+      setTimeout(() => {
+        burst(c.left, c.top + c.height * 0.78, 70, { angle: -Math.PI * 0.32, spread: 0.9, power: 24 });
+        burst(c.right, c.top + c.height * 0.78, 70, { angle: -Math.PI * 0.68, spread: 0.9, power: 24 });
+      }, 260);
+      setTimeout(() => rain(2600), 800);
+    }
+    try { if (navigator.vibrate) navigator.vibrate([25, 40, 60]); } catch (err) {}
+    setTimeout(() => { const h = $('#yay'); if (h) h.focus({ preventScroll: true }); }, 700);
+  });
+
+  /* tap the kitty for a few extra hearts */
+  sticker.addEventListener('pointerdown', e => {
+    burst(e.clientX, e.clientY, calm ? 6 : 18, { power: 8, extra: { shape: 'heart', g: 0.22, ttl: 70 } });
+  });
+
+  /* ── housekeeping ── */
+  let lastW = window.innerWidth;
+  window.addEventListener('resize', () => {
+    size();
+    fit();
+    if (window.innerWidth !== lastW) {
+      lastW = window.innerWidth;
+      no.style.setProperty('--dx', '0px');
+      no.style.setProperty('--dy', '0px');
+    }
+  });
+})();
+</script>
+</body>
+</html>
